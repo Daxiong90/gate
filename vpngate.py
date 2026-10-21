@@ -36,7 +36,7 @@ for _stream in (sys.stdout, sys.stderr):
 # ---------------------------------------------------------------------------
 REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 
-VPNGATE_API = os.environ.get("VPNGATE_API", "http://www.vpngate.net/api/iphone/")
+VPNGATE_API = os.environ.get("VPNGATE_API", "https://www.vpngate.net/api/iphone/")
 VPNGATE_MIRROR = os.environ.get(
     "VPNGATE_MIRROR",
     "https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json",
@@ -469,6 +469,8 @@ def write_outputs(data, edge_hosts):
 # main
 # ---------------------------------------------------------------------------
 def main():
+    if "你的域名" in WORKER_CHECK_URL or "https:///" in WORKER_CHECK_URL:
+        die("CHECK_WORKER 未配置: 请在仓库 Secrets 里设置 DOMAIN (检测 Worker 域名, 不带 https://)")
     session = requests.Session()
     rows, source = fetch_vpngate()
     raw_count = len(rows)
